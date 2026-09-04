@@ -56,16 +56,32 @@ export default class GameServer extends EventEmitter {
     };
   }
 
-  // Kiểm tra file jar tồn tại trước khi chạy
+  // Kiểm tra file jar tồn tại trước khi chạy.
+  // Trả về ĐƯỜNG DẪN TUYỆT ĐỐI của jar thật sự tìm thấy (tên có thể khác hoa/thường).
   _validate() {
     if (!this.cfg.path || !fs.existsSync(this.cfg.path)) {
       throw new Error(`Thư mục server không tồn tại: ${this.cfg.path}`);
     }
-    const jar = path.join(this.cfg.path, this.cfg.jarName || 'paper.jar');
-    if (!fs.existsSync(jar)) {
-      throw new Error(`Không tìm thấy jar: ${jar} (hãy nhét paper.jar vào thư mục này)`);
+    const wanted = this.cfg.jarName || 'paper.jar';
+    const jar = path.join(this.cfg.path, wanted);
+    if (fs.existsSync(jar)) return jar;
+
+    // Linux/macOS phân biệt hoa thường (Windows thì không): user upload "Paper.jar"
+    // vẫn phải chạy được. Dò lại trong thư mục, so tên không phân biệt hoa/thường.
+    let found = null;
+    try {
+      found = fs.readdirSync(this.cfg.path).find(
+        (n) => n.toLowerCase() === wanted.toLowerCase()
+      );
+    } catch {
+      // không đọc được thư mục -> để rơi xuống throw bên dưới
     }
-    return jar;
+    if (found) {
+      this._pushLog(`[WindowPtero] Dùng "${found}" thay cho "${wanted}" (khác hoa/thường)`);
+      return path.join(this.cfg.path, found);
+    }
+
+    throw new Error(`Không tìm thấy jar: ${jar} (hãy nhét paper.jar vào thư mục này)`);
   }
 
   // ---- điều khiển ----
@@ -83,7 +99,8 @@ export default class GameServer extends EventEmitter {
     if (this.cfg.flags && this.cfg.flags.trim()) {
       args.push(...this.cfg.flags.trim().split(/\s+/));
     }
-    args.push('-jar', this.cfg.jarName || 'paper.jar', '--nogui');
+    // Dùng đúng tên file jar tìm được (có thể khác hoa/thường với cấu hình)
+    args.push('-jar', path.basename(jar), '--nogui');
 
     this._manualStop = false;
     this._setState(STATE.STARTING);

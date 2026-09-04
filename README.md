@@ -1,13 +1,14 @@
 <h1 align="center">WindowPtero</h1>
 
 <p align="center">
-  Panel quản lý server Minecraft (PaperMC) chạy trực tiếp trên <b>Windows</b>.<br>
-  Không Docker, không Wings, không cần Linux — tải về, <code>npm start</code>, xong.
+  Panel quản lý server Minecraft (PaperMC) chạy trực tiếp trên <b>Windows</b> và <b>Linux</b>.<br>
+  Không Docker, không Wings — tải về, <code>npm start</code>, xong.
 </p>
 
 <p align="center">
   <img alt="Node" src="https://img.shields.io/badge/Node.js-%E2%89%A5%2018-5FA04E?logo=nodedotjs&logoColor=white">
   <img alt="Platform" src="https://img.shields.io/badge/Windows-Server%20%7C%2011%20%7C%2010-0078D4?logo=windows&logoColor=white">
+  <img alt="Linux" src="https://img.shields.io/badge/Linux-Debian%20%7C%20Ubuntu%20%7C%20RHEL-FCC624?logo=linux&logoColor=black">
   <img alt="Express" src="https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white">
   <img alt="License" src="https://img.shields.io/badge/License-MIT-blue">
 </p>
@@ -29,7 +30,7 @@
 
 | Thứ | Phiên bản |
 |---|---|
-| Windows | 10 / 11 / Server 2019+ |
+| Hệ điều hành | Windows 10 / 11 / Server 2019+ **hoặc** Linux (Debian, Ubuntu, RHEL, Rocky, Alma) |
 | Node.js | 18 trở lên |
 | Java | 21 trở lên (cho Paper đời mới) |
 
@@ -40,7 +41,8 @@ git clone https://github.com/ObsidianMC123/WindowPtero.git
 cd WindowPtero
 npm install
 
-copy .env.example .env      # rồi sửa WP_ADMIN_PASS trong .env
+copy .env.example .env      # Windows  (Linux: cp .env.example .env)
+# rồi sửa WP_ADMIN_PASS trong .env
 npm start
 ```
 
@@ -63,6 +65,50 @@ Cuối cùng script in ra link + tài khoản + mật khẩu và lưu vào `_THO
 Gỡ sạch bằng `deploy\uninstall.ps1` (mặc định giữ lại world).
 
 Chi tiết xem `deploy/DOC-TRUOC-KHI-CHAY.txt`.
+
+## Cài trên VPS Linux (một script)
+
+Panel viết bằng Node.js thuần nên chạy y nguyên trên Linux — không phải sửa dòng code nào.
+
+```bash
+git clone https://github.com/ObsidianMC123/WindowPtero.git
+cd WindowPtero
+sudo bash deploy/install.sh
+```
+
+Hỗ trợ Debian / Ubuntu / RHEL / Rocky / AlmaLinux, cả `x86_64` và `arm64`. Script tự:
+
+1. Cài Node 22 LTS vào `runtime/` nếu máy chưa có Node ≥ 18
+2. Cài OpenJDK 21 từ kho hệ thống, kho không có thì tải Temurin JRE 21
+3. Tạo user hệ thống `windowptero` (không login được) và cài panel vào `/opt/windowptero`
+4. Sinh mật khẩu admin ngẫu nhiên vào `.env` với `chmod 600`
+5. Tạo systemd service tự chạy khi boot và tự bật lại khi crash
+6. Mở cổng trên `ufw` / `firewalld` và/hoặc tạo link HTTPS qua Cloudflare Tunnel
+
+Tùy chỉnh bằng biến môi trường:
+
+```bash
+sudo WP_PORT=8080 WP_ACCESS=tunnel bash deploy/install.sh
+```
+
+| Biến | Mạc định | Ý nghĩa |
+|---|---|---|
+| `WP_INSTALL_DIR` | `/opt/windowptero` | Thư mục cài đặt |
+| `WP_SERVICE_USER` | `windowptero` | User chạy panel |
+| `WP_ACCESS` | `both` | `port` / `tunnel` / `both` |
+| `WP_PORT` | `2008` | Cổng panel |
+
+Sau khi cài:
+
+| Lệnh | Việc |
+|---|---|
+| `systemctl status windowptero` | Panel sống chưa |
+| `journalctl -u windowptero -f` | Xem log panel |
+| `bash /opt/windowptero/xem-link.sh` | In link Cloudflare hiện tại |
+| `sudo bash deploy/uninstall.sh` | Gỡ panel, **giữ lại** world |
+| `sudo WP_KEEP_DATA=0 bash deploy/uninstall.sh` | Gỡ sạch cả world |
+
+Panel chạy bằng user thường chứ không phải `root`, và service bật `NoNewPrivileges`, `ProtectSystem=full`, `ProtectHome` — chỉ ghi được trong thư mục của chính nó.
 
 ## Biến môi trường
 
