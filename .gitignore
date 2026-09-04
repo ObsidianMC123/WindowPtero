@@ -1,0 +1,47 @@
+# ===== Thư viện =====
+node_modules/
+
+# ===== Cấu hình & bí mật =====
+# .env chứa mật khẩu admin -> tuyệt đối không commit
+.env
+.env.*
+!.env.example
+
+# ===== Dữ liệu chạy thật =====
+# data/     : auth.json (hash mật khẩu), servers.json (đường dẫn máy thật)
+# volumes/  : world + jar của từng server Minecraft
+# runtime/  : Java / cloudflared do script deploy tải về
+# bg/       : ảnh & video nền người dùng upload
+data/
+volumes/
+runtime/
+bg/
+
+# ===== Server test và file thực nghiệm khi phát triển =====
+# _testsrv/ là một server Paper thật (jar, world, usercache) - rất nặng
+# và chứa dữ liệu người chơi, không thuộc source code
+_testsrv/
+_test_*.js
+
+# ===== Công cụ cá nhân trên máy dựng =====
+# chứa log hội thoại / session riêng tư
+.oatami/
+
+# ===== File tạm, log, backup, gói nén =====
+*.bak
+*.wpart
+*.log
+*.log.gz
+_*.log
+_*.txt
+*.zip
+*.zip.txt
+*.7z
+*.rar
+
+# ===== Hệ điều hành / editor =====
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

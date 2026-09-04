@@ -1,0 +1,43 @@
+{
+  "name": "windowptero",
+  "version": "0.1.0",
+  "description": "Panel quản lý PaperMC server trên Windows - không Docker, không Wings",
+  "type": "module",
+  "main": "server.js",
+  "license": "MIT",
+  "author": "ObsidianMC123",
+  "homepage": "https://github.com/ObsidianMC123/WindowPtero#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ObsidianMC123/WindowPtero.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ObsidianMC123/WindowPtero/issues"
+  },
+  "keywords": [
+    "minecraft",
+    "papermc",
+    "minecraft-server",
+    "server-panel",
+    "game-panel",
+    "pterodactyl-alternative",
+    "windows",
+    "express",
+    "websocket"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "multer": "^2.3.0",
+    "ws": "^8.18.0"
+  }
+}

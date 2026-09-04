@@ -1,0 +1,19 @@
+# Chuẩn hoá xuống dòng: lưu LF trong repo
+* text=auto eol=lf
+
+# Script Windows phải giữ CRLF, không thì cmd.exe chạy sai
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# File nhị phân: git đừng cố đổi xuống dòng
+*.jar binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.gif binary
+*.mp4 binary
+*.zip binary
+*.gz binary
+*.mca binary
+*.dat binary

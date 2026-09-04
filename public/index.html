@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WindowPtero — Minecraft Panel</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E9FE8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3l8 4.5v9L12 21l-8-4.5v-9z'/><path d='M12 12l8-4.5M12 12v9M12 12L4 7.5'/></svg>" />
+</head>
+<body>
+  <!-- ===== Icon sprite (SVG line icons, không phụ thuộc internet) ===== -->
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6.5" rx="2"/><rect x="3" y="13.5" width="18" height="6.5" rx="2"/><path d="M7 7.25h.01M7 16.75h.01"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.75" cy="9.75" r="1.5"/><path d="M4 17.5l4.5-4.5 3.5 3.5 3-3 5 5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 8l-4 4 4 4"/><path d="M6 12h9"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5l12 7.5-12 7.5z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-restart" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 1 1-2.9-6.4"/><path d="M20.5 4v5h-5"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14.5 5.5l4 4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 4h4"/><path d="M6.5 7l.9 12a1 1 0 0 0 1 .9h7.2a1 1 0 0 0 1-.9l.9-12"/><path d="M10.5 11v5.5M13.5 11v5.5"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M7 9.5l3 2.5-3 2.5"/><path d="M12.5 15h4.5"/></symbol>
+    <symbol id="i-files" viewBox="0 0 24 24"><path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7z"/><path d="M14 3v4h4"/><path d="M9 12.5h6M9 16h4"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2 2 0 0 1 5 5.5h3.6l1.9 2H19a2 2 0 0 1 2 2v7A2 2 0 0 1 19 18.5H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-folder-plus" viewBox="0 0 24 24"><path d="M3 7.5A2 2 0 0 1 5 5.5h3.6l1.9 2H19a2 2 0 0 1 2 2v7A2 2 0 0 1 19 18.5H5a2 2 0 0 1-2-2z"/><path d="M12 10.5v5M9.5 13h5"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7z"/><path d="M14 3v4h4"/></symbol>
+    <symbol id="i-package" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16.5V4.5"/><path d="M8 8.5l4-4 4 4"/><path d="M4.5 15.5v3A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-3"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4.5v12"/><path d="M8 12.5l4 4 4-4"/><path d="M4.5 15.5v3A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-3"/></symbol>
+    <symbol id="i-level-up" viewBox="0 0 24 24"><path d="M12 19.5V5"/><path d="M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 0 1 14.6-5.9"/><path d="M20.5 12a8.5 8.5 0 0 1-14.6 5.9"/><path d="M18 3v3.5h-3.5M6 21v-3.5h3.5"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4h9L20 8.5v10A1.5 1.5 0 0 1 18.5 20h-12A1.5 1.5 0 0 1 5 18.5z"/><path d="M9 4v5h6V4.5"/><path d="M8.5 20v-5.5h7V20"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5v8a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5v-6h5v6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4.5 11.5l15-6.5-6.5 15-2.2-6.3z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  </svg>
+
+  <div id="bgLayer" hidden></div>
+  <video id="bgVideo" hidden autoplay muted loop playsinline></video>
+  <div id="bgOverlay" hidden></div>
+
+  <div id="navBackdrop" class="nav-backdrop" hidden></div>
+
+  <header class="topbar">
+    <button id="btnMenu" class="btn btn-ghost btn-icon nav-toggle" title="Danh sách server" aria-label="Danh sách server">
+      <svg class="ic"><use href="#i-menu" /></svg>
+    </button>
+    <div class="brand">
+      <span class="logo"><svg class="ic"><use href="#i-cube" /></svg></span>
+      <h1>WindowPtero</h1>
+    </div>
+    <span class="chip">Minecraft Server Panel</span>
+    <span class="spacer"></span>
+    <div class="topbar-actions">
+      <button id="btnBg" class="btn btn-ghost" title="Đổi ảnh nền panel">
+        <svg class="ic"><use href="#i-image" /></svg><span class="lbl">Nền</span>
+      </button>
+      <button id="btnAdd" class="btn btn-primary">
+        <svg class="ic"><use href="#i-plus" /></svg><span class="lbl">Thêm server</span>
+      </button>
+      <button id="btnLogout" class="btn btn-ghost" title="Đăng xuất">
+        <svg class="ic"><use href="#i-logout" /></svg><span class="lbl">Đăng xuất</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Cột trái: danh sách server -->
+    <aside class="sidebar">
+      <h2><svg class="ic ic-sm"><use href="#i-server" /></svg>Servers</h2>
+      <ul id="serverList" class="server-list"></ul>
+      <p id="emptyHint" class="hint">Chưa có server nào. Bấm <b>Thêm server</b> ở góc trên bên phải để tạo cái đầu tiên.</p>
+    </aside>
+
+    <!-- Trạng thái rỗng: chưa chọn server -->
+    <section class="placeholder" id="placeholderPane">
+      <div class="ph-inner">
+        <span class="ph-icon"><svg class="ic"><use href="#i-server" /></svg></span>
+        <h2>Chưa chọn server</h2>
+        <p>Chọn một server ở cột bên trái để xem console realtime, quản lý file và điều khiển start / stop / restart.</p>
+      </div>
+    </section>
+
+    <!-- Cột phải: chi tiết + console -->
+    <section class="detail" id="detailPane" hidden>
+      <div class="detail-head">
+        <div>
+          <h2><svg class="ic ic-lg"><use href="#i-server" /></svg><span id="dName">—</span></h2>
+          <div class="meta">
+            <span id="dState" class="state state-STOPPED">STOPPED</span>
+            <span id="dPath" class="path"></span>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="btnStart" class="btn btn-start"><svg class="ic"><use href="#i-play" /></svg>Start</button>
+          <button id="btnStop" class="btn btn-stop"><svg class="ic"><use href="#i-stop" /></svg>Stop</button>
+          <button id="btnRestart" class="btn btn-restart"><svg class="ic"><use href="#i-restart" /></svg>Restart</button>
+          <button id="btnEdit" class="btn"><svg class="ic"><use href="#i-pencil" /></svg>Sửa</button>
+          <button id="btnDelete" class="btn btn-danger"><svg class="ic"><use href="#i-trash" /></svg>Xoá</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="console"><svg class="ic"><use href="#i-terminal" /></svg>Console</button>
+        <button class="tab-btn" data-tab="files"><svg class="ic"><use href="#i-files" /></svg>Files</button>
+      </div>
+
+      <div class="tab-panel" id="tab-console">
+        <div class="console-wrap">
+          <pre id="console" class="console"></pre>
+          <form id="cmdForm" class="cmd-form">
+            <span class="cmd-wrap">
+              <span class="prompt">&gt;</span>
+              <input id="cmdInput" type="text" placeholder="Gõ lệnh console rồi Enter (vd: say hello)..." autocomplete="off" />
+            </span>
+            <button class="btn btn-primary" type="submit"><svg class="ic"><use href="#i-send" /></svg><span class="lbl">Gửi</span></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-files" hidden>
+        <div class="fm-toolbar">
+          <span class="fm-crumbs" id="fmCrumbs"></span>
+          <span class="fm-actions">
+            <button id="fmUp" class="btn btn-sm"><svg class="ic ic-sm"><use href="#i-level-up" /></svg>Lên</button>
+            <button id="fmNewFolder" class="btn btn-sm"><svg class="ic ic-sm"><use href="#i-folder-plus" /></svg>Thư mục mới</button>
+            <button id="fmUploadBtn" class="btn btn-sm"><svg class="ic ic-sm"><use href="#i-upload" /></svg>Upload</button>
+            <input id="fmUploadInput" type="file" multiple hidden />
+            <button id="fmRefresh" class="btn btn-sm btn-icon" title="Tải lại"><svg class="ic ic-sm"><use href="#i-refresh" /></svg></button>
+          </span>
+        </div>
+
+        <div class="fm-progress" id="fmProgress" data-on="0">
+          <span class="track"><span class="fill" id="fmProgressFill"></span></span>
+          <span class="txt" id="fmProgressTxt"></span>
+          <button id="fmUploadCancel" class="btn btn-sm btn-icon" title="Huỷ upload"><svg class="ic ic-sm"><use href="#i-x" /></svg></button>
+        </div>
+        <div class="fm-scroll">
+          <table class="fm-table">
+            <thead><tr><th>Tên</th><th>Kích thước</th><th>Sửa lúc</th><th></th></tr></thead>
+            <tbody id="fmList"></tbody>
+          </table>
+        </div>
+        <p id="fmErr" class="err"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Editor dạng modal, KHÔNG mờ nền -->
+  <div id="fmEditor" class="editor-modal" hidden>
+    <div class="fm-editor-head">
+      <span id="fmEditName"></span>
+      <span class="grp">
+        <button id="fmSave" class="btn btn-primary btn-sm"><svg class="ic ic-sm"><use href="#i-save" /></svg>Lưu</button>
+        <button id="fmCloseEdit" class="btn btn-sm"><svg class="ic ic-sm"><use href="#i-x" /></svg>Đóng</button>
+      </span>
+    </div>
+    <textarea id="fmEditArea"></textarea>
+  </div>
+
+  <!-- Modal thêm/sửa server -->
+  <div id="modal" class="modal dim" hidden>
+    <div class="modal-box">
+      <h3><svg class="ic"><use href="#i-server" /></svg><span id="modalTitle">Thêm server</span></h3>
+      <p class="sub">Panel sẽ tạo thư mục riêng cho server và chạy jar bằng Java trên máy.</p>
+      <form id="srvForm">
+        <input type="hidden" id="fId" />
+        <label>Tên server<input id="fName" required placeholder="Survival SIVI" /></label>
+        <label>Tên jar<input id="fJar" value="paper.jar" /></label>
+        <label>Java path (để trống = java hệ thống)<input id="fJava" placeholder="C:\Program Files\Java\jdk-21\bin\java.exe" /></label>
+        <div class="row2">
+          <label>Min RAM<input id="fMin" value="2G" /></label>
+          <label>Max RAM<input id="fMax" value="4G" /></label>
+        </div>
+        <label>Flags thêm (tuỳ chọn)<input id="fFlags" placeholder="-XX:+UseG1GC ..." /></label>
+        <label class="check"><input type="checkbox" id="fAuto" /> Tự khởi động lại khi crash</label>
+        <div class="modal-actions">
+          <button type="button" id="btnCancel" class="btn btn-ghost">Huỷ</button>
+          <button type="submit" class="btn btn-primary"><svg class="ic"><use href="#i-save" /></svg>Lưu</button>
+        </div>
+        <p id="formErr" class="err"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal chọn nền -->
+  <div id="bgModal" class="modal dim" hidden>
+    <div class="modal-box">
+      <h3><svg class="ic"><use href="#i-image" /></svg>Ảnh nền panel</h3>
+      <p class="sub">Hỗ trợ ảnh, GIF và MP4 · tối đa 100MB.</p>
+      <label>Chọn file
+        <input type="file" id="bgFile" accept="image/*,video/mp4" />
+      </label>
+      <div class="modal-actions">
+        <button type="button" id="bgRemove" class="btn btn-danger"><svg class="ic"><use href="#i-trash" /></svg>Xoá nền</button>
+        <button type="button" id="bgCancel" class="btn btn-ghost">Đóng</button>
+        <button type="button" id="bgUpload" class="btn btn-primary"><svg class="ic"><use href="#i-upload" /></svg>Áp dụng</button>
+      </div>
+      <p id="bgErr" class="err"></p>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/yaml/yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/properties/properties.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

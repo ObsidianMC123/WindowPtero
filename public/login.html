@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập — WindowPtero</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E9FE8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3l8 4.5v9L12 21l-8-4.5v-9z'/><path d='M12 12l8-4.5M12 12v9M12 12L4 7.5'/></svg>" />
+</head>
+<body class="login-page">
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.4-3.6 4-5.4 7-5.4s5.6 1.8 7 5.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><path d="M12 14.5v2.5"/></symbol>
+    <symbol id="i-login" viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M14 8l4 4-4 4"/><path d="M9 12h9"/></symbol>
+  </svg>
+
+  <form id="loginForm" class="login-box">
+    <span class="logo"><svg class="ic"><use href="#i-cube" /></svg></span>
+    <h1>WindowPtero</h1>
+    <p class="tag">Đăng nhập để quản lý server</p>
+    <label>Tài khoản
+      <span class="field">
+        <svg class="ic"><use href="#i-user" /></svg>
+        <input id="username" autocomplete="username" required placeholder="admin" />
+      </span>
+    </label>
+    <label>Mật khẩu
+      <span class="field">
+        <svg class="ic"><use href="#i-lock" /></svg>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      </span>
+    </label>
+    <button class="btn btn-primary" type="submit"><svg class="ic"><use href="#i-login" /></svg>Đăng nhập</button>
+    <p id="err" class="err"></p>
+    <p class="login-foot">Panel chạy nội bộ trên máy này</p>
+  </form>
+  <script>
+    const form = document.getElementById('loginForm');
+    const err = document.getElementById('err');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.textContent = '';
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Đăng nhập thất bại');
+        location.href = '/';
+      } catch (e) {
+        err.textContent = e.message;
+      }
+    });
+  </script>
+</body>
+</html>

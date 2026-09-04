@@ -1,0 +1,72 @@
+==================================================================
+ WINDOWPTERO - HUONG DAN CHAY (danh cho nguoi chay ho tren VPS)
+==================================================================
+
+CAI DAT: 3 buoc
+
+  1. Giai nen ca folder nay ra o dia, vi du D:\WindowPtero-setup
+  2. Vao folder deploy
+  3. Bam phai "Chay-de-cai-dat.bat" -> Run as administrator
+
+Xong. Script tu lam het:
+  - cai Node.js LTS (neu may chua co)
+  - cai Java 21 rieng cho panel (neu may chua co)
+  - copy panel vao C:\WindowPtero va cai thu vien
+  - tao mat khau admin ngau nhien, luu trong C:\WindowPtero\.env
+  - tao link https qua Cloudflare (khong can mo port, khong can domain)
+  - mo cong 2008 tren firewall de vao bang IP
+  - dat lich tu bat lai moi khi VPS reboot
+
+Cuoi cung script in ra bang thong tin (link + tai khoan + mat khau)
+va luu vao file:  C:\WindowPtero\_THONG-TIN-TRUY-CAP.txt
+Gui file do cho nguoi nho ban cai la duoc.
+
+
+NHUNG THU CAN BIET
+
+  Panel chiem cong 2008. Doi cong: sua WP_PORT trong C:\WindowPtero\.env
+  roi restart panel.
+
+  Link Cloudflare dang mien phi khong can tai khoan nen se DOI moi lan
+  tunnel chay lai. Lay link moi: chay C:\WindowPtero\xem-link.cmd
+
+  Neu chi muon cho vao bang IP, khong muon dung Cloudflare:
+    sua WP_ACCESS=port trong .env, roi:
+      schtasks /End /TN WindowPtero-Tunnel
+      schtasks /Delete /TN WindowPtero-Tunnel /F
+
+
+LENH HAY DUNG (mo CMD bang quyen Administrator)
+
+  Restart panel:
+      schtasks /End /TN WindowPtero-Panel
+      schtasks /Run /TN WindowPtero-Panel
+
+  Xem log panel:
+      type C:\WindowPtero\_panel.log
+
+  Xem link truy cap:
+      C:\WindowPtero\xem-link.cmd
+
+
+GO BO SACH
+
+  Bam phai "uninstall.ps1" -> Run with PowerShell (quyen Administrator),
+  hoac trong CMD Administrator:
+      powershell -ExecutionPolicy Bypass -File uninstall.ps1
+
+  Mac dinh chi dung panel + xoa task + dong cong, GIU LAI file va world.
+  Muon xoa het file:
+      powershell -ExecutionPolicy Bypass -File uninstall.ps1 -RemoveFiles
+
+
+LUU Y BAO MAT (quan trong, doc gium)
+
+  Panel nay cho phep sua file va doi tham so khoi dong server, nghia la
+  ai dang nhap duoc panel thi chay duoc lenh tren may. Vi vay:
+    - dung dua mat khau trong .env cho nguoi khac
+    - dung bo mat khau mac dinh
+  Neu chi muon nguoi dung vao bang link Cloudflare, dat WP_ACCESS=tunnel
+  va WP_HOST=127.0.0.1 trong .env de panel khong mo ra internet.
+
+==================================================================
